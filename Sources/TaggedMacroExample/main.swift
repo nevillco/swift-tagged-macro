@@ -9,7 +9,7 @@ struct Person {
 
     #tagged(String.self, "FirstName")
     let firstName: FirstName
-    #tagged(String.self, "LastName")
+    #tagged(String.self, "LastName", access: .private)
     private let lastName: LastName
 
     #tagged(Int.self, "YearsOld")

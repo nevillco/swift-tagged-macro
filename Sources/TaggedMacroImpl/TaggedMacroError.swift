@@ -54,7 +54,7 @@ public extension TaggedMacroError {
 extension TaggedMacroError {
 
     static let incorrectArgumentListCount = Self.init(
-        message: "#tagged expects two arguments: the raw type to be wrapped, and the new type name.",
+        message: "#tagged expects 2 or 3 arguments: the raw type to be wrapped, the new type name, and optionally the new type’s access level.",
         kind: .incorrectArgumentListCount
     )
 

@@ -1,7 +1,7 @@
 import SwiftSyntax
 
 // MARK: - AccessLevelModifier
-enum AccessLevelModifier: String, Comparable, CaseIterable {
+public enum AccessLevelModifier: String, CaseIterable {
 
     case `private`
     case `fileprivate`
@@ -17,15 +17,6 @@ enum AccessLevelModifier: String, Comparable, CaseIterable {
         case .public: return .public
         case .open: return .open
         }
-    }
-
-    static func <(
-        lhs: AccessLevelModifier,
-        rhs: AccessLevelModifier
-    ) -> Bool {
-        let lhs = Self.allCases.firstIndex(of: lhs)!
-        let rhs = Self.allCases.firstIndex(of: rhs)!
-        return lhs < rhs
     }
 
 }

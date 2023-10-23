@@ -10,7 +10,7 @@ public struct TaggedMacroImpl: DeclarationMacro {
     ) throws -> [DeclSyntax] {
         let argumentList = node.argumentList
 
-        guard argumentList.count == 2 else {
+        guard [2, 3].contains(argumentList.count) else {
             throw TaggedMacroError.incorrectArgumentListCount.diagnostic(node: node)
         }
 
@@ -21,7 +21,8 @@ public struct TaggedMacroImpl: DeclarationMacro {
             throw TaggedMacroError.invalidRawTypeArgument.diagnostic(node: node)
         }
 
-        guard let nameArgumentSegment = node.argumentList.last?.expression
+        let middleIndex = argumentList.index(after: argumentList.startIndex)
+        guard let nameArgumentSegment = node.argumentList[middleIndex].expression
             .as(StringLiteralExprSyntax.self)?.segments.first,
             case .stringSegment(let nameArgumentSyntax) = nameArgumentSegment,
             case let nameArgument = nameArgumentSyntax.content.text
