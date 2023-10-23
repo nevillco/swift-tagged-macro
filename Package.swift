@@ -36,7 +36,7 @@ let package = Package(
     targets: [
         // Actual macro implementation that performs the compile-time codegen.
         .macro(
-            name: "TaggedMacroMacro",
+            name: "TaggedMacroImpl",
             dependencies: [
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
@@ -46,7 +46,7 @@ let package = Package(
         // which can be used by external clients.
         .target(
             name: "TaggedMacro",
-            dependencies: ["TaggedMacroMacro"]
+            dependencies: ["TaggedMacroImpl"]
         ),
         // An example client to demonstrate usage.
         .executableTarget(
@@ -60,7 +60,7 @@ let package = Package(
         .testTarget(
             name: "TaggedMacroTests",
             dependencies: [
-                "TaggedMacroMacro",
+                "TaggedMacroImpl",
                 .product(
                     name: "SwiftSyntaxMacrosTestSupport",
                     package: "swift-syntax"
