@@ -5,6 +5,9 @@ Provides a Swift macro wrapping some type declaration boilerplate in [swift-tagg
 ## Example
 
 ```swift
+import TaggedMacro
+import Tagged
+
 struct Person {
 
     #tagged(UUID.self, "ID")
