@@ -1,7 +1,7 @@
 import SwiftSyntax
 
 // MARK: - AccessLevelModifier
-public enum AccessLevelModifier: String, CaseIterable {
+enum AccessLevelModifier: String, CaseIterable {
 
     case `private`
     case `fileprivate`
