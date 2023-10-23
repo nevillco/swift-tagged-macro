@@ -2,50 +2,38 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-public struct TaggedMacroImpl: PeerMacro {
+public struct TaggedMacroImpl: ExpressionMacro {
 
     public static func expansion(
-        of node: AttributeSyntax,
-        providingPeersOf declaration: some DeclSyntaxProtocol,
+        of node: some FreestandingMacroExpansionSyntax,
         in context: some MacroExpansionContext
-    ) throws -> [DeclSyntax] {
-        guard let variableDeclaration = declaration
-            .as(VariableDeclSyntax.self) else {
-            throw TaggedMacroError
-                .notAVariable.diagnostic(node: node)
-        }
-        guard let customTypeName = variableDeclaration
-            .tokens(viewMode: .fixedUp)
-            .compactMap({ variableToken in
-                switch variableToken.tokenKind {
-                case let .identifier(typeName): return typeName
-                default: return nil
-                }
-            }).last else {
-            throw TaggedMacroError.customTypeNameNotFound.diagnostic(node: node)
+    ) throws -> ExprSyntax {
+        let argumentList = node.argumentList
+
+        guard argumentList.count == 2 else {
+            return ""
         }
 
-        guard let rawTypeName = node
-            .tokens(viewMode: .fixedUp)
-            .compactMap({ variableToken in
-                switch variableToken.tokenKind {
-                case let .identifier(typeName)
-                    where typeName != "Tagged": return typeName
-                default: return nil
-                }
-            }).first else {
-            throw TaggedMacroError.rawTypeNameNotFound.diagnostic(node: node)
+        guard let rawTypeArgument = node.argumentList.first?.expression
+            .as(MemberAccessExprSyntax.self)?.base?
+            .as(DeclReferenceExprSyntax.self)?.baseName.text
+        else {
+            return ""
         }
 
-        let declarationAccessLevel = variableDeclaration.accessLevelModifier
-        let accessLevelString = declarationAccessLevel.map { "\($0) " } ?? ""
+        guard let nameArgumentSegment = node.argumentList.last?.expression
+            .as(StringLiteralExprSyntax.self)?.segments.first,
+            case .stringSegment(let nameArgumentSyntax) = nameArgumentSegment,
+            case let nameArgument = nameArgumentSyntax.content.text
+        else {
+            return ""
+        }
 
-        return [
-"""
-\(raw: accessLevelString)enum \(raw: customTypeName)_Tag { }
-\(raw: accessLevelString)typealias \(raw: customTypeName) = Tagged<\(raw: customTypeName)_Tag, \(raw: rawTypeName)>
-"""
-        ]
+
+        return """
+        enum \(raw: nameArgument)_Tag { }
+        typealias \(raw: nameArgument) = Tagged<\(raw: nameArgument)_Tag, \(raw: rawTypeArgument)>
+        """
     }
 
 }
