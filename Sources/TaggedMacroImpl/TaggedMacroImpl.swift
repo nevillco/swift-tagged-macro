@@ -11,14 +11,14 @@ public struct TaggedMacroImpl: DeclarationMacro {
         let argumentList = node.argumentList
 
         guard argumentList.count == 2 else {
-            return []
+            throw TaggedMacroError.incorrectArgumentListCount.diagnostic(node: node)
         }
 
         guard let rawTypeArgument = node.argumentList.first?.expression
             .as(MemberAccessExprSyntax.self)?.base?
             .as(DeclReferenceExprSyntax.self)?.baseName.text
         else {
-            return []
+            throw TaggedMacroError.invalidRawTypeArgument.diagnostic(node: node)
         }
 
         guard let nameArgumentSegment = node.argumentList.last?.expression
@@ -26,7 +26,7 @@ public struct TaggedMacroImpl: DeclarationMacro {
             case .stringSegment(let nameArgumentSyntax) = nameArgumentSegment,
             case let nameArgument = nameArgumentSyntax.content.text
         else {
-            return []
+            throw TaggedMacroError.invalidNameArgument.diagnostic(node: node)
         }
 
 

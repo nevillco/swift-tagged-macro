@@ -7,9 +7,9 @@ public struct TaggedMacroError: Error {
     public let message: String
 
     public enum Kind: String {
-        case notAVariable
-        case customTypeNameNotFound
-        case rawTypeNameNotFound
+        case incorrectArgumentListCount
+        case invalidRawTypeArgument
+        case invalidNameArgument
     }
     public let kind: Kind
 
@@ -53,19 +53,19 @@ public extension TaggedMacroError {
 // MARK: - TaggedMacroError - Internal
 extension TaggedMacroError {
 
-    static let notAVariable = Self(
-        message: "@Wrapped can only be attached to variables.",
-        kind: .notAVariable
+    static let incorrectArgumentListCount = Self.init(
+        message: "#tagged expects two arguments: the raw type to be wrapped, and the new type name.",
+        kind: .incorrectArgumentListCount
     )
 
-    static let customTypeNameNotFound = Self(
-        message: "@Wrapped requires you provide a name for the type that will be generated, such as `: ID` or `: FirstName`.",
-        kind: .customTypeNameNotFound
+    static let invalidRawTypeArgument = Self.init(
+        message: "Invalid raw type: please provide a valid type name as the first argument.",
+        kind: .invalidRawTypeArgument
     )
 
-    static let rawTypeNameNotFound = Self.init(
-        message: "Raw type not found. This should be passed as an argument to @Wrapped, such as `@Wrapped(UUID.self).",
-        kind: .rawTypeNameNotFound
+    static let invalidNameArgument = Self.init(
+        message: "Invalid name: please provide a String value for the name of your tagged type as the second argument.",
+        kind: .invalidNameArgument
     )
 
 }
