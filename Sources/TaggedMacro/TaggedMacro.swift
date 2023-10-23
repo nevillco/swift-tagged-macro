@@ -4,7 +4,7 @@ import TaggedMacroImpl
 public macro tagged<T>(
     _ taggedType: T.Type,
     _ typeName: String,
-    access accessLevel: AccessLevelModifier? = nil
+    access accessLevel: AccessLevel? = nil
 ) = #externalMacro(
     module: "TaggedMacroImpl",
     type: "TaggedMacroImpl"

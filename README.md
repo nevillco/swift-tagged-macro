@@ -38,7 +38,7 @@ The macro declaration takes 2 to 3 parameters:
 public macro tagged<T>(
     _ taggedType: T.Type,
     _ typeName: String,
-    access accessLevel: AccessLevelModifier? = nil
+    access accessLevel: AccessLevel? = nil
 )
 ```
 where:
