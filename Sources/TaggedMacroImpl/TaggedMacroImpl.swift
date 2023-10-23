@@ -32,14 +32,17 @@ public struct TaggedMacroImpl: DeclarationMacro {
 
         let accessString: String
         if argumentList.count == 3 {
-            guard let accessArgument = argumentList.last?.expression
+            if let accessArgument = argumentList.last?.expression
                 .as(MemberAccessExprSyntax.self)?.declName.baseName.text,
-                let access = AccessLevelModifier(rawValue: accessArgument)
-            else {
+                let access = AccessLevelModifier(rawValue: accessArgument) {
+                accessString = "\(access.keyword) "
+            } else if argumentList.last?.expression.as(NilLiteralExprSyntax.self) != nil {
+                // Macro caller manually specified `access: nil`.
+                accessString = ""
+            } else {
                 throw TaggedMacroError.invalidAccessLevel.diagnostic(node: node)
             }
-            accessString = "\(access.keyword) "
-        } else {
+        }  else {
             accessString = ""
         }
 

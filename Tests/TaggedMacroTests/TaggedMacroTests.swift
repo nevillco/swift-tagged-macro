@@ -28,7 +28,7 @@ final class TaggedMacroTests: XCTestCase {
                 #tagged(String.self, "LastName", access: .private)
                 private let lastName: LastName
 
-                #tagged(Int.self, "YearsOld")
+                #tagged(Int.self, "YearsOld", access: nil)
                 let yearsOld: YearsOld
 
             }
