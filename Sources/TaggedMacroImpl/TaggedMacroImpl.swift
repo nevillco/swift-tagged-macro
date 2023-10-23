@@ -2,23 +2,23 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-public struct TaggedMacroImpl: ExpressionMacro {
+public struct TaggedMacroImpl: DeclarationMacro {
 
     public static func expansion(
         of node: some FreestandingMacroExpansionSyntax,
         in context: some MacroExpansionContext
-    ) throws -> ExprSyntax {
+    ) throws -> [DeclSyntax] {
         let argumentList = node.argumentList
 
         guard argumentList.count == 2 else {
-            return ""
+            return []
         }
 
         guard let rawTypeArgument = node.argumentList.first?.expression
             .as(MemberAccessExprSyntax.self)?.base?
             .as(DeclReferenceExprSyntax.self)?.baseName.text
         else {
-            return ""
+            return []
         }
 
         guard let nameArgumentSegment = node.argumentList.last?.expression
@@ -26,14 +26,16 @@ public struct TaggedMacroImpl: ExpressionMacro {
             case .stringSegment(let nameArgumentSyntax) = nameArgumentSegment,
             case let nameArgument = nameArgumentSyntax.content.text
         else {
-            return ""
+            return []
         }
 
 
-        return """
+        return [
+        """
         enum \(raw: nameArgument)_Tag { }
         typealias \(raw: nameArgument) = Tagged<\(raw: nameArgument)_Tag, \(raw: rawTypeArgument)>
         """
+        ]
     }
 
 }

@@ -25,7 +25,8 @@ final class TaggedMacroTests: XCTestCase {
         } expansion: {
             """
             public struct Example {
-                enum ID_Tag { }
+                enum ID_Tag {
+                }
                 typealias ID = Tagged<ID_Tag, UUID>
             }
             """
