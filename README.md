@@ -30,7 +30,18 @@ swift-tagged is a framework from the [PointFree](https://www.pointfree.co) folks
 
 ## Usage
 
-The macro declaration takes 3 parameters
+The macro declaration takes 2 to 3 parameters:
+```swift
+public macro tagged<T>(
+    _ taggedType: T.Type,
+    _ typeName: String,
+    access accessLevel: AccessLevelModifier? = nil
+)
+```
+where:
+`taggedType` is the name of the underlying raw type - commonly `String`, `UUID` or `Int`,
+`typeName` is the name of the new generated type,
+and `accessLevel` is an optional access level modifier for the generated type - such as `public`, `internal` or `private`.
 
 ## Gotchas
 
