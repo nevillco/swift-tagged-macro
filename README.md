@@ -42,9 +42,10 @@ public macro tagged<T>(
 )
 ```
 where:
-`taggedType` is the name of the underlying raw type - commonly `String`, `UUID` or `Int`,
-`typeName` is the name of the new generated type,
-and `accessLevel` is an optional access level modifier for the generated type - such as `public`, `internal` or `private`.
+
+* `taggedType` is the name of the underlying raw type - commonly `String`, `UUID` or `Int`,
+* `typeName` is the name of the new generated type,
+* and `accessLevel` is an optional access level modifier for the generated type - such as `public`, `internal` or `private`.
 
 ## Gotchas
 
