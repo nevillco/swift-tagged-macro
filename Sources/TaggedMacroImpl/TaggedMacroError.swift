@@ -10,6 +10,7 @@ public struct TaggedMacroError: Error {
         case incorrectArgumentListCount
         case invalidRawTypeArgument
         case invalidNameArgument
+        case invalidAccessLevel
     }
     public let kind: Kind
 
@@ -66,6 +67,11 @@ extension TaggedMacroError {
     static let invalidNameArgument = Self.init(
         message: "Invalid name: please provide a String value for the name of your tagged type as the second argument.",
         kind: .invalidNameArgument
+    )
+
+    static let invalidAccessLevel = Self.init(
+        message: "Invalid access level provided for #tagged type.",
+        kind: .invalidAccessLevel
     )
 
 }

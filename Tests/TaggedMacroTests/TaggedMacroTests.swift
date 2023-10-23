@@ -25,7 +25,7 @@ final class TaggedMacroTests: XCTestCase {
 
                 #tagged(String.self, "FirstName")
                 let firstName: FirstName
-                #tagged(String.self, "LastName")
+                #tagged(String.self, "LastName", access: .private)
                 private let lastName: LastName
 
                 #tagged(Int.self, "YearsOld")
@@ -46,9 +46,9 @@ final class TaggedMacroTests: XCTestCase {
                 }
                 typealias FirstName = Tagged<FirstName_Tag, String>
                 let firstName: FirstName
-                enum LastName_Tag {
+                private enum LastName_Tag {
                 }
-                typealias LastName = Tagged<LastName_Tag, String>
+                private typealias LastName = Tagged<LastName_Tag, String>
                 private let lastName: LastName
 
                 enum YearsOld_Tag {
